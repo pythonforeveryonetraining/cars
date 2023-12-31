@@ -10,10 +10,10 @@ import random
 import math
 from car import Car
 from hud import Hud
-        
+
 class Canvas(Window):
     frame_duration = 1 / 60
-    
+
     def __init__(self, track, car_image_paths):
         super().__init__()
         self.track = track
@@ -29,7 +29,7 @@ class Canvas(Window):
         self.checkpoint_sprites = []
         for i, checkpoint in enumerate(track.checkpoints):
             self.checkpoint_sprites.append((Circle(checkpoint[0], checkpoint[1], 15, color=(255, 255, 255, 100), batch=self.background_batch), Label(str(i), x=checkpoint[0], y=checkpoint[1], anchor_x="center", anchor_y="center", color=(255, 255, 255, 255), batch=self.background_batch)))
-        
+
     def simulate_generation(self, networks, simulation_round):
         self.hud = Hud(simulation_round, self.overlay_batch)
         self.car_sprites = []
@@ -58,19 +58,19 @@ class Canvas(Window):
         self.population_alive = len(running_cars)
         if self.population_alive > 0:
             self.hud.update(self.population_alive, self.population_total, running_cars[0].speed)
-    
+
     def draw(self):
         self.clear()
         self.background_batch.draw()
         self.cars_batch.draw()
         self.overlay_batch.draw()
         self.flip()
-        
+
     def on_key_press(self, symbol, modifiers):
         if symbol == key.ESCAPE:
             self.is_simulating = False
-            print("Similation aborted.")
-            
+            print("Simulation aborted.")
+
     def check_checkpoints(self, car_sprite, checkpoints):
         for i, checkpoint in enumerate(checkpoints):
             length = math.sqrt((checkpoint[0] - car_sprite.body.x) ** 2 + (checkpoint[1] - car_sprite.body.y) ** 2)
