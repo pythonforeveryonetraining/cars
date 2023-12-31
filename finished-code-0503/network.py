@@ -25,7 +25,7 @@ class Network:
             layer.feed_forward(inputs)
             inputs = [i for i in layer.outputs]
         return self.layers[-1].outputs
-
+    
     def serialize(self):
         chromosome = []
         for layer in self.layers:
@@ -33,13 +33,14 @@ class Network:
                 for weight in outputs:
                     chromosome.append(weight)
         return RankableChromosome(self.highest_checkpoint, chromosome)
+    
 
 class RankableChromosome:
     def __init__(self, highest_checkpoint, chromosome):
         self.highest_checkpoint = highest_checkpoint
         self.chromosome = chromosome
-
+        
     def __lt__(self, other):
-        """ This __lt__ allows rank selection to ensure a sorted list with the following rules:
-            - highest_checkpoint comes first in the list. """
+        """ Allows sorting chromomes for rank selection with the following rules:
+            - highest checkpoint appears on top of the list. """
         return self.highest_checkpoint > other.highest_checkpoint
