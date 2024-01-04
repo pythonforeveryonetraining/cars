@@ -24,10 +24,13 @@ class Car:
             steer_position = -1.0
         elif keyboard[key.RIGHT]:
             steer_position = 1.0
+            
         if acceleration > 0:
             self.speed += 0.1
+            
         if self.speed > self.max_speed:
             self.speed = self.max_speed
+            
         if self.speed < 0:
             self.speed = 0.0
             

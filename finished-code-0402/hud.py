@@ -9,4 +9,3 @@ class Hud:
     def update(self, alive, population, speed):
         self.population_label.text = f"Population: {alive}/{population}"
         self.speed_label.text = f"Speed: {speed:.2f}"
-    

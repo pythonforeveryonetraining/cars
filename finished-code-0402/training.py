@@ -1,7 +1,7 @@
 from canvas import Canvas
-import os
 from racetrack import Track
 from network import Network
+import os
 
 car_image_paths = [os.path.join("images", f"car{i}.png") for i in range(5)]
 canvas = Canvas(Track(0), car_image_paths)

@@ -18,18 +18,14 @@ class Car:
     def update(self, delta_time):
         render_speed = delta_time * 60
         self.speed -= 0.05  # friction
-
         if self.is_running:
-            # IMPORTANT! This code does not work yet.
-            # Proceed with the next course part to provide the inputs.
             acceleration, steer_position = self.network.feed_forward()
-            
+                            
             if acceleration > 0:
                 self.speed += 0.1
                 
             if self.speed > self.max_speed:
                 self.speed = self.max_speed
-                
             self.rotation -= steer_position * self.speed * render_speed
         else:  # engine is off
             self.speed -= 0.05 * self.speed

@@ -9,7 +9,7 @@ from car import Car
 
 class Canvas(Window):
     frame_duration = 1 / 60
-
+    
     def __init__(self, track_image_path, car_image_paths):
         super().__init__()
         self.is_simulating = True
@@ -21,7 +21,7 @@ class Canvas(Window):
         self.car_images = [image.load(c) for c in car_image_paths]
         self.keyboard = key.KeyStateHandler()  # TODO: remove keyboard control
         self.push_handlers(self.keyboard)  # TODO: remove keyboard control
-
+        
     def simulate_generation(self):
         self.car_sprites = []
         self.car_sprites.append(Car(random.choice(self.car_images), self.cars_batch))
@@ -33,17 +33,17 @@ class Canvas(Window):
                 self.dispatch_events()
                 self.update(elapsed_time)
                 self.draw()
-
+                
     def update(self, delta_time):
         for car_sprite in self.car_sprites:
             car_sprite.update(delta_time, self.keyboard)  # TODO: remove keyboard control
-
+    
     def draw(self):
         self.clear()
         self.background_batch.draw()
         self.cars_batch.draw()
         self.flip()
-
+        
     def on_key_press(self, symbol, modifiers):
         if symbol == key.ESCAPE:
             self.is_simulating = False
