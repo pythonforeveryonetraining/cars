@@ -16,4 +16,3 @@ class Storage:
         except Exception:
             # something went wrong. return an empty list of chromosomes
             return []
-    

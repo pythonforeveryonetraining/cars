@@ -5,10 +5,10 @@ class Evolution:
     def __init__(self, population_count, keep_count):
         self.population_count = population_count
         self.keep_count = keep_count
-    
-    def execute(self, weighted_chromosomes):
+        
+    def execute(self, rankable_chromosomes):
         # selection
-        sorted_chromosomes = [w.chromosome for w in sorted(weighted_chromosomes)]
+        sorted_chromosomes = [w.chromosome for w in sorted(rankable_chromosomes)]
         keep_chromosomes = sorted_chromosomes[:self.keep_count]
         
         # cross over
@@ -21,10 +21,6 @@ class Evolution:
                 offspring.append(c2[:split_index] + c1[split_index:])
         
         # mutation
-        for chromosome in offspring[self.keep_count:]:
-            for i in range(len(chromosome)):
-                if random.randint(0, 4) == 1:
-                    chromosome[i] = random.random() * 2 - 1
         
         assert len(offspring) == self.population_count, "Offspring count is not population_count"
         return offspring

@@ -2,10 +2,10 @@ class Evolution:
     def __init__(self, population_count, keep_count):
         self.population_count = population_count
         self.keep_count = keep_count
-    
-    def execute(self, weighted_chromosomes):
+        
+    def execute(self, rankable_chromosomes):
         # selection
-        sorted_chromosomes = [w.chromosome for w in sorted(weighted_chromosomes)]
+        sorted_chromosomes = [w.chromosome for w in sorted(rankable_chromosomes)]
         keep_chromosomes = sorted_chromosomes[:self.keep_count]
         
         # cross over

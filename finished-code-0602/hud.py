@@ -5,8 +5,8 @@ class NeuronSprite:
     def __init__(self, x, y, batch):
         self.node_border = Circle(x, y, 22, color=(0, 0, 0, 255), batch=batch)
         self.node_fill = Circle(x, y, 20, color=(255, 255, 255, 255), batch=batch)
-        self.node_value = Label("1.0", x=x, y=y, color=(255, 255, 255, 255), font_size=12, anchor_x="center", anchor_y="center", batch=batch)
-
+        self.node_value = Label(x=x, y=y, color=(255, 255, 255, 255), font_size=12, anchor_x="center", anchor_y="center", batch=batch)
+        
     def update(self, value):
         self.node_value.text = f"{value:.2f}"
         if value > 0:
@@ -40,4 +40,3 @@ class Hud:
             for value in layer.outputs:
                 self.neurons[index].update(value)
                 index += 1
-    

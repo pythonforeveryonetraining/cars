@@ -3,7 +3,7 @@ from pyglet.shapes import Line
 import math
 
 class Radar:
-    max_length = 2
+    max_length_pixels = 200
     
     def __init__(self, angle, batch):
         self.angle = angle
@@ -28,17 +28,15 @@ class Car:
     def update(self, delta_time):
         render_speed = delta_time * 60
         self.speed -= 0.05  # friction
-
         if self.is_running:
-            measurements = [self.probe(radar) / radar.max_length for radar in self.radars]
+            measurements = [self.probe(radar) / radar.max_length_pixels for radar in self.radars]
             acceleration, steer_position = self.network.feed_forward(measurements)
-            
+                            
             if acceleration > 0:
                 self.speed += 0.1
                 
             if self.speed > self.max_speed:
                 self.speed = self.max_speed
-                
             self.rotation -= steer_position * self.speed * render_speed
         else:  # engine is off
             self.speed -= 0.05 * self.speed
@@ -57,10 +55,10 @@ class Car:
         radar.beam.y = self.body.y
         x2 = radar.beam.x
         y2 = radar.beam.y
-        while probe_length < radar.max_length and self.track.is_road(x2, y2):
-            probe_length += .02
-            x2 = self.body.x + probe_length * 100 * math.cos(math.radians(self.rotation + radar.angle))
-            y2 = self.body.y + probe_length * 100 * math.sin(math.radians(self.rotation + radar.angle))
+        while probe_length < radar.max_length_pixels and self.track.is_road(x2, y2):
+            probe_length += 2  # pixels
+            x2 = self.body.x + probe_length * math.cos(math.radians(self.rotation + radar.angle))
+            y2 = self.body.y + probe_length * math.sin(math.radians(self.rotation + radar.angle))
         radar.beam.x2 = x2
         radar.beam.y2 = y2
         return probe_length
