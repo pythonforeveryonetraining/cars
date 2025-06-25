@@ -4,15 +4,15 @@ import math
 
 class Radar:
     max_length_pixels = 200
-    
+
     def __init__(self, angle, batch):
         self.angle = angle
-        self.beam = Line(0, 0, 0, 0, width=2, color=(255, 255, 255, 127), batch=batch)
+        self.beam = Line(0, 0, 0, 0, width=2, color=(255, 255, 255, 127), batch=batch)  # Are you using pyglet 2.1 or higher? Then replace 'width=2' with 'thickness=2'
 
 class Car:
     max_speed = 6.0
     slipping_speed = max_speed * 0.75
-    
+
     def __init__(self, network, track, image, batch):
         self.network = network
         self.track = track
@@ -26,37 +26,37 @@ class Car:
         self.is_running = True
         self.last_checkpoint_passed = 0
         self.smallest_edge_distance = 100  # pixels
-        
+
     def update(self, delta_time):
         render_speed = delta_time * 60
         self.speed -= 0.05  # friction
         if self.is_running:
             measurements = [self.probe(radar) / radar.max_length_pixels for radar in self.radars]
             acceleration, steer_position = self.network.feed_forward(measurements)
-                            
+
             if acceleration > 0:
                 self.speed += 0.1
-                
+
             if self.speed > self.max_speed:
                 self.speed = self.max_speed
-                
+
             if self.speed > self.slipping_speed:
                 steer_impact = -self.speed / self.max_speed + self.slipping_speed / self.max_speed + 1
             else:
                 steer_impact = 1
-            
+
             self.rotation -= steer_position * self.speed * steer_impact * render_speed * 3
         else:  # engine is off
             self.speed -= 0.05 * self.speed
-            
+
         if self.speed < 0:
             self.speed = 0.0
             self.shut_off()
-            
+
         self.body.rotation = -self.rotation
         self.body.x += self.speed * render_speed * math.cos(math.radians(self.rotation))
         self.body.y += self.speed * render_speed * math.sin(math.radians(self.rotation))
-        
+
     def probe(self, radar):
         probe_length = 0
         radar.beam.x = self.body.x
@@ -72,13 +72,13 @@ class Car:
         if probe_length < self.smallest_edge_distance:
             self.smallest_edge_distance = probe_length
         return probe_length
-    
+
     def hit_checkpoint(self, id):
         if id - self.last_checkpoint_passed == 1:
             self.last_checkpoint_passed = id
         elif id < self.last_checkpoint_passed:  # driving in the wrong direction or finish
             self.shut_off()
-        
+
     def shut_off(self):
         self.is_running = False
         self.radars = None
